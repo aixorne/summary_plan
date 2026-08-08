@@ -121,6 +121,15 @@ body {
   font-size: 1rem;
 }
 
+.plan-header-title {
+  font-weight: 700;
+  color: #0052D4;
+  font-size: 1.15rem;
+  margin-bottom: 12px;
+  border-bottom: 2px dashed #cbd5e1;
+  padding-bottom: 8px;
+}
+
 .product-group-block {
   margin-bottom: 16px;
 }
@@ -215,7 +224,7 @@ body {
           <input type="text" class="form-control" id="lotDate" placeholder="📅 เลือกวันที่ Lot..."> 
         </div> 
 
-        <!-- ช่องกรอก Batch (รองรับ xx-xx และ xx-xxx) -->
+        <!-- ช่องกรอก Batch -->
         <div class="col-md-3 col-12"> 
           <label class="form-label text-white fw-bold d-md-block d-none">Batch</label>
           <input type="text" 
@@ -300,11 +309,19 @@ body {
 
 <script> 
 const STORAGE_KEY = "summary_plan_data_v2"; 
+const PLAN_INFO_KEY = "summary_plan_info_v2"; 
+const RECORD_DATE_KEY = "summary_plan_date_v2"; // เก็บวันที่ล่าสุดที่มีการกด Save
+
 let appData = []; 
+let planHeader = ""; 
 let productModalObj;
 
 window.onload = function(){ 
+  checkMidnightReset(); // ตรวจสอบข้ามคืนทันทีที่เปิดเว็บ
+
   const data = localStorage.getItem(STORAGE_KEY); 
+  const savedHeader = localStorage.getItem(PLAN_INFO_KEY);
+
   if(data){
     try {
       appData = JSON.parse(data);
@@ -312,6 +329,11 @@ window.onload = function(){
       appData = [];
     }
   } 
+
+  if(savedHeader && appData.length > 0){
+    planHeader = savedHeader;
+  }
+
   renderData();
 
   // ติดตั้ง Flatpickr Date Picker
@@ -324,18 +346,56 @@ window.onload = function(){
   });
 
   productModalObj = new bootstrap.Modal(document.getElementById('productModal'));
+
+  // เช็คเที่ยงคืนแบบ Realtime ทุกๆ 10 วินาที
+  setInterval(checkMidnightReset, 10000);
 };
 
-/* ฟังก์ชันจัดรูปแบบช่อง Batch ให้รองรับตัวเลข 4-5 ตัว แล้วแทรก - หลังเลข 2 ตัวแรก */
+/* ฟังก์ชันตรวจสอบและล้างข้อมูลเมื่อข้ามคืน (ผ่านเที่ยงคืน 00:00 น.) */
+function checkMidnightReset() {
+  const lastRecordedDate = localStorage.getItem(RECORD_DATE_KEY);
+  const todayDateStr = new Date().toDateString();
+
+  if (lastRecordedDate && lastRecordedDate !== todayDateStr) {
+    appData = [];
+    planHeader = "";
+    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(PLAN_INFO_KEY);
+    localStorage.removeItem(RECORD_DATE_KEY);
+    renderData();
+  }
+}
+
 function formatBatchInput(input) {
-  let val = input.value.replace(/\D/g, ''); // กรองเอาเฉพาะตัวเลข
-  if (val.length > 5) val = val.substring(0, 5); // จำกัดตัวเลขไม่เกิน 5 ตัว
+  let val = input.value.replace(/\D/g, ''); 
+  if (val.length > 5) val = val.substring(0, 5); 
   
   if (val.length > 2) {
     input.value = val.substring(0, 2) + '-' + val.substring(2);
   } else {
     input.value = val;
   }
+}
+
+function generatePlanHeader() {
+  const now = new Date();
+  const hours = now.getHours();
+  
+  let targetDate = new Date(now);
+  let timeStr = "";
+
+  if (hours < 12) {
+    timeStr = "ดึก";
+    targetDate.setDate(targetDate.getDate() - 1);
+  } else {
+    timeStr = "เช้า";
+  }
+
+  const dd = String(targetDate.getDate()).padStart(2, '0');
+  const mm = String(targetDate.getMonth() + 1).padStart(2, '0');
+  const yy = String(targetDate.getFullYear()).slice(-2);
+
+  return `แผน ${dd}${mm}${yy} ${timeStr}`;
 }
 
 function selectProduct(name) {
@@ -360,7 +420,7 @@ function renderData() {
     return;
   }
 
-  let html = "";
+  let html = `<div class="plan-header-title">${planHeader}</div>`;
   appData.forEach((group, groupIdx) => {
     html += `<div class="product-group-block">`;
     html += `<div class="product-title">${group.product}</div>`;
@@ -379,6 +439,8 @@ function renderData() {
 }
 
 function saveData(){ 
+  checkMidnightReset(); // ตรวจสอบข้ามคืนก่อนบันทึกทุกครั้ง
+
   const productVal = document.getElementById("productVal").value;
   const lotDate = document.getElementById("lotDate").value;
   const batch = document.getElementById("batch").value.trim();
@@ -394,7 +456,6 @@ function saveData(){
     return;
   } 
 
-  // ตรวจสอบรูปแบบ Batch ว่าต้องเป็น xx-xx หรือ xx-xxx เท่านั้น
   const batchPattern = /^\d{2}-\d{2,3}$/;
   if(!batchPattern.test(batch)){
     Swal.fire({ 
@@ -406,11 +467,17 @@ function saveData(){
     return;
   }
 
+  // หากเป็นสินค้าชิ้นแรก ให้คำนวณตั้งค่า Header แผนประจำวันขึ้นมาใหม่
+  if(appData.length === 0){
+    planHeader = generatePlanHeader();
+    localStorage.setItem(PLAN_INFO_KEY, planHeader);
+    localStorage.setItem(RECORD_DATE_KEY, new Date().toDateString());
+  }
+
   const day = lotDate.split("-")[2]; 
   const number = qty !== "" ? Number(qty).toLocaleString("en-US") : ""; 
   const lotLine = `${day}/${batch}=${number}`;
 
-  // ค้นหากลุ่มสินค้านี้
   let existingGroup = appData.find(g => g.product === productVal);
   if(existingGroup){
     existingGroup.items.push(lotLine);
@@ -452,6 +519,13 @@ function deleteSingleItem(groupIdx, itemIdx) {
       if(appData[groupIdx].items.length === 0){
         appData.splice(groupIdx, 1);
       }
+      
+      if(appData.length === 0){
+        planHeader = "";
+        localStorage.removeItem(PLAN_INFO_KEY);
+        localStorage.removeItem(RECORD_DATE_KEY);
+      }
+
       saveAndRefresh();
       Swal.fire({ icon: 'success', title: 'ลบเรียบร้อย!', timer: 1000, showConfirmButton: false });
     }
@@ -481,9 +555,13 @@ function sortData() {
 }
 
 function getFormattedPlainText() {
-  return appData.map(group => {
+  if (appData.length === 0) return "";
+  
+  const productsText = appData.map(group => {
     return `${group.product}\n` + group.items.join("\n");
   }).join("\n\n");
+
+  return `${planHeader}\n\n${productsText}`;
 }
 
 function saveAndRefresh() {
@@ -541,6 +619,9 @@ function clearTextArea(){
   }).then((resultAction) => {
     if (resultAction.isConfirmed) {
       appData = [];
+      planHeader = "";
+      localStorage.removeItem(PLAN_INFO_KEY);
+      localStorage.removeItem(RECORD_DATE_KEY);
       saveAndRefresh();
       Swal.fire({ icon: 'success', title: 'ลบเรียบร้อย!', timer: 1200, showConfirmButton: false });
     }
