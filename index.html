@@ -3,441 +3,240 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Summary of the Plan</title> 
+<title>Summary of the Plan</title>
 
-<!-- Google Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
-<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet"> 
-
-<!-- Bootstrap 5 CDN -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"> 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> 
-
-<!-- SweetAlert2 -->
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-<!-- Flatpickr (Custom Datepicker) -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_blue.css">
+<link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_green.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://npmcdn.com/flatpickr/dist/l10n/th.js"></script>
 
-<style> 
+<style>
 :root {
-  --primary-gradient: linear-gradient(135deg, #0052D4 0%, #4364F7 50%, #6FB1FC 100%);
-  --accent-color: #4364F7;
+  --primary-gradient: linear-gradient(135deg, #166534 0%, #22a06b 52%, #86efac 100%);
+  --accent-color: #16a34a;
+  --accent-dark: #166534;
+  --accent-light: #ecfdf3;
 }
 
+* { box-sizing: border-box; }
 body {
   font-family: 'Prompt', sans-serif;
-  background: #f0f4f9;
-  color: #333;
-} 
-
+  background: #f3faf5;
+  color: #26382c;
+}
 .app-header {
   background: var(--primary-gradient);
-  box-shadow: 0 4px 15px rgba(0, 102, 255, 0.2);
+  box-shadow: 0 4px 15px rgba(22, 101, 52, .18);
 }
-
 .card-box {
-  background: #ffffff;
+  background: #fff;
   border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 30px rgba(22, 101, 52, .08);
   padding: 24px;
   margin-top: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.8);
-} 
-
+  border: 1px solid #e1f2e5;
+}
 .table-header-custom {
   background: var(--primary-gradient);
   border-radius: 16px;
   padding: 15px;
 }
-
-/* Custom Input Styles */
 .form-control, .custom-select-btn {
   border-radius: 12px;
-  border: 1.5px solid #dce4ec;
+  border: 1.5px solid #d8e9dc;
   padding: 12px 16px;
-  font-size: 0.95rem;
-  transition: all 0.25s ease-in-out;
-  background-color: #ffffff;
-  color: #333;
+  font-size: .95rem;
+  transition: all .25s ease-in-out;
+  background-color: #fff;
+  color: #26382c;
   width: 100%;
   text-align: left;
 }
-
 .form-control:focus {
   border-color: var(--accent-color);
-  box-shadow: 0 0 0 4px rgba(67, 100, 247, 0.15);
+  box-shadow: 0 0 0 4px rgba(22, 163, 74, .14);
 }
-
 .custom-select-btn {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-
-/* Flatpickr Custom Design */
+.custom-select-btn:hover {
+  border-color: #22a06b;
+  background-color: #f0fdf4;
+}
 .flatpickr-calendar {
   border-radius: 16px !important;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
+  box-shadow: 0 10px 25px rgba(0,0,0,.15) !important;
   border: none !important;
   font-family: 'Prompt', sans-serif !important;
 }
-
-.flatpickr-day.selected {
+.flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange {
   background: var(--accent-color) !important;
   border-color: var(--accent-color) !important;
 }
-
-/* Modal Selector Design */
+.flatpickr-day.today { border-color: var(--accent-color); }
 .product-list-group .list-group-item {
   border-radius: 12px !important;
   margin-bottom: 8px;
-  border: 1.5px solid #edf2f7;
+  border: 1.5px solid #e1eee4;
   padding: 12px 16px;
   font-weight: 500;
-  transition: all 0.2s ease;
+  transition: all .2s ease;
   cursor: pointer;
+  color: #334b39;
+  background: #fff;
 }
-
 .product-list-group .list-group-item:hover,
 .product-list-group .list-group-item.active {
-  background-color: #eef2ff;
-  color: var(--accent-color);
-  border-color: var(--accent-color);
+  background-color: #ecfdf3;
+  color: var(--accent-dark);
+  border-color: #22a06b;
 }
-
-/* Container สำหรับแสดงรายการผลลัพธ์ */
 .result-display-box {
-  background-color: #f8fafc;
-  border: 1.5px solid #dce4ec;
+  background-color: #f8fdf9;
+  border: 1.5px solid #d8e9dc;
   border-radius: 12px;
   padding: 16px;
   min-height: 180px;
   font-family: monospace, 'Prompt';
   font-size: 1rem;
+  overflow-wrap: anywhere;
 }
-
 .plan-header-title {
   font-weight: 700;
-  color: #0052D4;
+  color: #15803d;
   font-size: 1.15rem;
   margin-bottom: 12px;
-  border-bottom: 2px dashed #cbd5e1;
+  border-bottom: 2px dashed #c8e6d0;
   padding-bottom: 8px;
 }
-
-.product-group-block {
-  margin-bottom: 16px;
-}
-
+.product-group-block { margin-bottom: 16px; }
 .product-title {
   font-weight: 700;
-  color: #2b3674;
+  color: #166534;
   font-size: 1.05rem;
   margin-bottom: 4px;
 }
-
 .lot-item-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 10px;
   padding: 3px 0;
 }
-
 .btn-delete-item {
-  color: #e63946;
+  flex-shrink: 0;
+  color: #dc3545;
   background: none;
   border: none;
   font-size: 1rem;
   cursor: pointer;
   padding: 0 4px;
   line-height: 1;
-  transition: transform 0.15s ease;
+  transition: transform .15s ease;
 }
-
-.btn-delete-item:hover {
-  transform: scale(1.25);
-}
-
-/* Buttons Styling */
+.btn-delete-item:hover { transform: scale(1.25); color: #a71d2a; }
 .btn {
   border-radius: 12px;
-/* ===== GREEN & WHITE THEME ===== */
-:root {
-  --primary-gradient: linear-gradient(
-    135deg,
-    #15803d 0%,
-    #22a06b 50%,
-    #86efac 100%
-  );
-  --accent-color: #16a34a;
+  padding: 10px 18px;
+  font-weight: 500;
+  transition: all .2s ease;
 }
-
-body {
-  background: #f3faf5;
-  color: #26382c;
-}
-
-.app-header {
-  background: var(--primary-gradient);
-  box-shadow: 0 4px 15px rgba(22, 163, 74, 0.18);
-}
-
-.card-box {
-  background: #ffffff;
-  border-color: #e1f2e5;
-  box-shadow: 0 10px 30px rgba(22, 101, 52, 0.07);
-}
-
-.table-header-custom {
-  background: var(--primary-gradient);
-}
-
-.form-control,
-.custom-select-btn {
-  border-color: #d8e9dc;
-  background-color: #ffffff;
-  color: #26382c;
-}
-
-.form-control:focus {
-  border-color: #22a06b;
-  box-shadow: 0 0 0 4px rgba(34, 160, 107, 0.14);
-}
-
-.custom-select-btn:hover {
-  border-color: #22a06b;
-  background-color: #f0fdf4;
-}
-
-.flatpickr-calendar {
-  font-family: 'Prompt', sans-serif !important;
-}
-
-.flatpickr-day.selected,
-.flatpickr-day.startRange,
-.flatpickr-day.endRange {
-  background: #16a34a !important;
-  border-color: #16a34a !important;
-}
-
-.flatpickr-day.today {
-  border-color: #16a34a;
-}
-
-.product-list-group .list-group-item {
-  border-color: #e1eee4;
-  color: #334b39;
-  background: #ffffff;
-}
-
-.product-list-group .list-group-item:hover,
-.product-list-group .list-group-item.active {
-  background-color: #ecfdf3;
-  color: #15803d;
-  border-color: #22a06b;
-}
-
-.result-display-box {
-  background-color: #f8fdf9;
-  border-color: #d8e9dc;
-}
-
-.plan-header-title {
-  color: #15803d;
-  border-bottom-color: #c8e6d0;
-}
-
-.product-title {
-  color: #166534;
-}
-
-.btn-success {
-  background-color: #16a34a;
-  border: none;
-  color: #ffffff;
-}
-
-.btn-success:hover {
-  background-color: #15803d;
-}
-
-.btn-warning {
-  background-color: #f0b429;
-  border: none;
-  color: #ffffff;
-}
-
-.btn-warning:hover {
-  background-color: #d99a12;
-  color: #ffffff;
-}
-
-.btn-primary {
-  background-color: #15803d;
-  border: none;
-  color: #ffffff;
-}
-
-.btn-primary:hover {
-  background-color: #166534;
-}
-
-.btn-info {
-  background-color: #0d9488;
-  border: none;
-  color: #ffffff;
-}
-
-.btn-info:hover {
-  background-color: #0f766e;
-  color: #ffffff;
-}
-
-.btn-danger {
-  background-color: #dc3545;
-  border: none;
-}
-
-.btn-danger:hover {
-  background-color: #bb2d3b;
-}
-
-.btn-delete-item {
-  color: #dc3545;
-}
-
-.btn-delete-item:hover {
-  color: #a71d2a;
-}
-
-/* ปรับแถบหัว Modal */
+.btn:hover { transform: translateY(-2px); box-shadow: 0 5px 12px rgba(0,0,0,.12); }
+.btn-success { background-color: #16a34a; border: none; color: #fff; }
+.btn-success:hover { background-color: #15803d; color: #fff; }
+.btn-warning { background-color: #eab308; border: none; color: #fff; }
+.btn-warning:hover { background-color: #ca8a04; color: #fff; }
+.btn-primary { background-color: #15803d; border: none; color: #fff; }
+.btn-primary:hover { background-color: #166534; color: #fff; }
+.btn-info { background-color: #0d9488; border: none; color: #fff; }
+.btn-info:hover { background-color: #0f766e; color: #fff; }
+.btn-danger { background-color: #dc3545; border: none; color: #fff; }
+.btn-danger:hover { background-color: #bb2d3b; color: #fff; }
+.modal-content { overflow: hidden; }
 #productModal .modal-header {
   background: var(--primary-gradient) !important;
+  color: #fff;
 }
-
-/* ปรับสีข้อความหัวข้อ */
-.app-header h3 {
-  color: #ffffff;
-}
-
-/* ปรับสีปุ่มและช่องกรอกบนมือถือ */
 @media (max-width: 767.98px) {
-  .table-header-custom {
-    padding: 14px;
-    border-radius: 16px;
-  }
-
-  .card-box {
-    padding: 16px;
-    border-radius: 18px;
-  }
-
-  .form-control,
-  .custom-select-btn {
-    min-height: 46px;
-  }
+  .card-box { padding: 16px; border-radius: 18px; }
+  .table-header-custom { padding: 14px; border-radius: 16px; }
+  .form-control, .custom-select-btn { min-height: 46px; }
+  .result-display-box { padding: 12px; font-size: .95rem; }
+  .btn { padding: 10px 14px; }
 }
-</style> 
-
-</head> 
-
-<body> 
-
+</style>
+</head>
+<body>
 <div class="app-header">
   <div class="text-center text-white p-3">
     <h3 class="mb-0 fw-bold">📊 สรุปยอดแผนประจำวัน</h3>
   </div>
-</div> 
+</div>
 
-<div class="container mb-5"> 
-  <div class="card-box"> 
-
-    <div class="table-header-custom shadow-sm"> 
-      <div class="row g-3"> 
-
-        <!-- ปุ่มเลือกสินค้า (เปิด Modal) -->
+<div class="container mb-5">
+  <div class="card-box">
+    <div class="table-header-custom shadow-sm">
+      <div class="row g-3">
         <div class="col-md-3 col-12">
           <label class="form-label text-white fw-bold d-md-block d-none">สินค้า</label>
           <button class="custom-select-btn" type="button" data-bs-toggle="modal" data-bs-target="#productModal">
-            <span id="selectedProductText">📦 เลือกสินค้า...</span>
-            <small>▼</small>
+            <span id="selectedProductText">📦 เลือกสินค้า...</span><small>▼</small>
           </button>
           <input type="hidden" id="productVal" value="">
-        </div> 
-
-        <!-- ตัวเลือกวันที่ (Flatpickr) -->
-        <div class="col-md-3 col-12"> 
+        </div>
+        <div class="col-md-3 col-12">
           <label class="form-label text-white fw-bold d-md-block d-none">Lot (วันที่)</label>
-          <input type="text" class="form-control" id="lotDate" placeholder="📅 เลือกวันที่ Lot..."> 
-        </div> 
-
-        <!-- ช่องกรอก Batch -->
-        <div class="col-md-3 col-12"> 
+          <input type="text" class="form-control" id="lotDate" placeholder="📅 เลือกวันที่ Lot...">
+        </div>
+        <div class="col-md-3 col-12">
           <label class="form-label text-white fw-bold d-md-block d-none">Batch</label>
-          <input type="text" 
-                 inputmode="numeric" 
-                 pattern="[0-9]*" 
-                 class="form-control" 
-                 id="batch" 
-                 placeholder="🏷️ Ex. 12-34 หรือ 12-345" 
-                 maxlength="6" 
-                 oninput="formatBatchInput(this)"> 
-        </div> 
-
-        <!-- ช่องกรอกจำนวน (ไม่บังคับ) -->
-        <div class="col-md-3 col-12"> 
+          <input type="text" inputmode="numeric" pattern="[0-9]*" class="form-control" id="batch" placeholder="🏷️ Ex. 12-34 หรือ 12-345" maxlength="6" oninput="formatBatchInput(this)">
+        </div>
+        <div class="col-md-3 col-12">
           <label class="form-label text-white fw-bold d-md-block d-none">รับเข้า (ไม่บังคับ)</label>
-          <input type="number" class="form-control" id="qty" placeholder="🔢 จำนวนรับเข้า (ถ้ามี)"> 
-        </div> 
-
+          <input type="number" class="form-control" id="qty" placeholder="🔢 จำนวนรับเข้า (ถ้ามี)">
+        </div>
       </div>
-    </div> 
+    </div>
 
-    <!-- ปุ่ม Save & Clear Form -->
-    <div class="mt-4 d-flex flex-wrap gap-2"> 
-      <button class="btn btn-success flex-grow-1 flex-md-grow-0" onclick="saveData()">💾 Save</button> 
-      <button class="btn btn-warning flex-grow-1 flex-md-grow-0" onclick="clearForm()">🧹 Clear Form</button> 
-    </div> 
+    <div class="mt-4 d-flex flex-wrap gap-2">
+      <button class="btn btn-success flex-grow-1 flex-md-grow-0" onclick="saveData()">💾 Save</button>
+      <button class="btn btn-warning flex-grow-1 flex-md-grow-0" onclick="clearForm()">🧹 Clear Form</button>
+    </div>
 
-    <!-- ผลลัพธ์ -->
-    <div class="mt-4"> 
+    <div class="mt-4">
       <div class="d-flex justify-content-between align-items-center mb-2">
-        <label class="form-label fw-bold fs-5 text-secondary mb-0">📋 ผลลัพธ์</label> 
+        <label class="form-label fw-bold fs-5 text-secondary mb-0">📋 ผลลัพธ์</label>
       </div>
-
-      <!-- กล่องแสดงผลรายการ -->
       <div id="resultDisplay" class="result-display-box">
         <span class="text-muted">ยังไม่มีข้อมูล กด Save เพื่อบันทึกข้อมูล...</span>
       </div>
-      
       <div class="mt-3 d-flex flex-wrap gap-2">
-        <button class="btn btn-primary" onclick="copyText()">📋 Copy ข้อความ</button> 
-        <button class="btn btn-info" onclick="sortData()">📅 จัดเรียงวันที่ (น้อย->มาก)</button> 
-        <button class="btn btn-danger" onclick="clearTextArea()">🗑 ลบข้อความทั้งหมด</button> 
+        <button class="btn btn-primary" onclick="copyText()">📋 Copy ข้อความ</button>
+        <button class="btn btn-info" onclick="sortData()">📅 จัดเรียงวันที่ (น้อย-&gt;มาก)</button>
+        <button class="btn btn-danger" onclick="clearTextArea()">🗑 ลบข้อความทั้งหมด</button>
       </div>
-    </div> 
+    </div>
+  </div>
+</div>
 
-  </div> 
-</div> 
-
-<!-- Modal เลือกสินค้า -->
 <div class="modal fade" id="productModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-    <div class="modal-content" style="border-radius: 20px; border:none;">
-      <div class="modal-header" style="background: var(--primary-gradient); color:white; border-radius: 20px 20px 0 0;">
+    <div class="modal-content" style="border-radius:20px;border:none;">
+      <div class="modal-header" style="border-radius:20px 20px 0 0;">
         <h5 class="modal-title fw-bold">📦 เลือกรายการสินค้า</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body p-3">
-        <!-- Search Input -->
         <input type="text" class="form-control mb-3" id="searchProduct" placeholder="🔍 ค้นหาสินค้า..." onkeyup="filterProducts()">
-        
-        <!-- รายการสินค้า -->
         <div class="list-group product-list-group" id="productList">
           <div class="list-group-item" onclick="selectProduct('เต้าส่วน')">เต้าส่วน</div>
           <div class="list-group-item" onclick="selectProduct('กล้วยแดง')">กล้วยแดง</div>
@@ -462,55 +261,37 @@ body {
   </div>
 </div>
 
-<script> 
-const STORAGE_KEY = "summary_plan_data_v2"; 
-const PLAN_INFO_KEY = "summary_plan_info_v2"; 
-const RECORD_DATE_KEY = "summary_plan_date_v2"; // เก็บวันที่ล่าสุดที่มีการกด Save
-
-let appData = []; 
-let planHeader = ""; 
+<script>
+const STORAGE_KEY = "summary_plan_data_v2";
+const PLAN_INFO_KEY = "summary_plan_info_v2";
+const RECORD_DATE_KEY = "summary_plan_date_v2";
+let appData = [];
+let planHeader = "";
 let productModalObj;
 
-window.onload = function(){ 
-  checkMidnightReset(); // ตรวจสอบข้ามคืนทันทีที่เปิดเว็บ
-
-  const data = localStorage.getItem(STORAGE_KEY); 
+window.onload = function() {
+  checkMidnightReset();
+  const data = localStorage.getItem(STORAGE_KEY);
   const savedHeader = localStorage.getItem(PLAN_INFO_KEY);
-
-  if(data){
-    try {
-      appData = JSON.parse(data);
-    } catch(e) {
-      appData = [];
-    }
-  } 
-
-  if(savedHeader && appData.length > 0){
-    planHeader = savedHeader;
+  if (data) {
+    try { appData = JSON.parse(data); } catch (e) { appData = []; }
   }
-
+  if (savedHeader && appData.length > 0) planHeader = savedHeader;
   renderData();
-
-  // ติดตั้ง Flatpickr Date Picker
   flatpickr("#lotDate", {
     locale: "th",
     dateFormat: "Y-m-d",
     altInput: true,
     altFormat: "j F Y",
-    disableMobile: "true"
+    disableMobile: true
   });
-
   productModalObj = new bootstrap.Modal(document.getElementById('productModal'));
-
-  // เช็คเที่ยงคืนแบบ Realtime ทุกๆ 10 วินาที
   setInterval(checkMidnightReset, 10000);
 };
 
-/* ฟังก์ชันตรวจสอบและล้างข้อมูลเมื่อข้ามคืน (ผ่านเที่ยงคืน 00:00 น.) */
 function checkMidnightReset() {
   const lastRecordedDate = localStorage.getItem(RECORD_DATE_KEY);
   const todayDateStr = new Date().toDateString();
-
   if (lastRecordedDate && lastRecordedDate !== todayDateStr) {
     appData = [];
     planHeader = "";
@@ -522,34 +303,24 @@ function checkMidnightReset() {
 }
 
 function formatBatchInput(input) {
-  let val = input.value.replace(/\D/g, ''); 
-  if (val.length > 5) val = val.substring(0, 5); 
-  
-  if (val.length > 2) {
-    input.value = val.substring(0, 2) + '-' + val.substring(2);
-  } else {
-    input.value = val;
-  }
+  let val = input.value.replace(/\D/g, '');
+  if (val.length > 5) val = val.substring(0, 5);
+  input.value = val.length > 2 ? val.substring(0, 2) + '-' + val.substring(2) : val;
 }
 
 function generatePlanHeader() {
   const now = new Date();
-  const hours = now.getHours();
-  
-  let targetDate = new Date(now);
+  const targetDate = new Date(now);
   let timeStr = "";
-
-  if (hours < 12) {
+  if (now.getHours() < 12) {
     timeStr = "ดึก";
     targetDate.setDate(targetDate.getDate() - 1);
   } else {
     timeStr = "เช้า";
   }
-
   const dd = String(targetDate.getDate()).padStart(2, '0');
   const mm = String(targetDate.getMonth() + 1).padStart(2, '0');
   const yy = String(targetDate.getFullYear()).slice(-2);
-
   return `แผน ${dd}${mm}${yy} ${timeStr}`;
 }
 
@@ -561,126 +332,80 @@ function selectProduct(name) {
 
 function filterProducts() {
   const input = document.getElementById('searchProduct').value.toLowerCase();
-  const items = document.querySelectorAll('#productList .list-group-item');
-  items.forEach(item => {
-    const text = item.innerText.toLowerCase();
-    item.style.display = text.includes(input) ? '' : 'none';
+  document.querySelectorAll('#productList .list-group-item').forEach(item => {
+    item.style.display = item.innerText.toLowerCase().includes(input) ? '' : 'none';
   });
 }
 
 function renderData() {
   const displayBox = document.getElementById("resultDisplay");
-  if(appData.length === 0){
+  if (appData.length === 0) {
     displayBox.innerHTML = '<span class="text-muted">ยังไม่มีข้อมูล กด Save เพื่อบันทึกข้อมูล...</span>';
     return;
   }
-
   let html = `<div class="plan-header-title">${planHeader}</div>`;
   appData.forEach((group, groupIdx) => {
-    html += `<div class="product-group-block">`;
-    html += `<div class="product-title">${group.product}</div>`;
+    html += `<div class="product-group-block"><div class="product-title">${group.product}</div>`;
     group.items.forEach((itemText, itemIdx) => {
-      html += `
-        <div class="lot-item-row">
-          <span>${itemText}</span>
-          <button class="btn-delete-item" onclick="deleteSingleItem(${groupIdx}, ${itemIdx})" title="ลบรายการนี้">⨂</button>
-        </div>
-      `;
+      html += `<div class="lot-item-row"><span>${itemText}</span><button class="btn-delete-item" onclick="deleteSingleItem(${groupIdx}, ${itemIdx})" title="ลบรายการนี้" aria-label="ลบรายการนี้">⨂</button></div>`;
     });
     html += `</div>`;
   });
-
   displayBox.innerHTML = html;
 }
 
-function saveData(){ 
-  checkMidnightReset(); // ตรวจสอบข้ามคืนก่อนบันทึกทุกครั้ง
-
+function saveData() {
+  checkMidnightReset();
   const productVal = document.getElementById("productVal").value;
   const lotDate = document.getElementById("lotDate").value;
   const batch = document.getElementById("batch").value.trim();
   const qty = document.getElementById("qty").value;
-
-  if(productVal == ""){
-    Swal.fire({ icon: 'warning', title: 'แจ้งเตือน', text: 'กรุณาเลือกสินค้า', confirmButtonColor: '#4364F7' });
-    return;
-  } 
-
-  if(lotDate == "" || batch == ""){
-    Swal.fire({ icon: 'warning', title: 'ข้อมูลไม่ครบถ้วน', text: 'กรุณากรอก วันที่ (Lot) และ Batch ให้เรียบร้อย', confirmButtonColor: '#4364F7' });
-    return;
-  } 
-
-  const batchPattern = /^\d{2}-\d{2,3}$/;
-  if(!batchPattern.test(batch)){
-    Swal.fire({ 
-      icon: 'warning', 
-      title: 'รูปแบบ Batch ไม่ถูกต้อง', 
-      text: 'กรุณากรอก Batch ในรูปแบบ xx-xx หรือ xx-xxx เท่านั้น (เช่น 12-34 หรือ 12-345)', 
-      confirmButtonColor: '#4364F7' 
-    });
+  if (productVal === "") {
+    Swal.fire({ icon: 'warning', title: 'แจ้งเตือน', text: 'กรุณาเลือกสินค้า', confirmButtonColor: '#16a34a' });
     return;
   }
-
-  // หากเป็นสินค้าชิ้นแรก ให้คำนวณตั้งค่า Header แผนประจำวันขึ้นมาใหม่
-  if(appData.length === 0){
+  if (lotDate === "" || batch === "") {
+    Swal.fire({ icon: 'warning', title: 'ข้อมูลไม่ครบถ้วน', text: 'กรุณากรอก วันที่ (Lot) และ Batch ให้เรียบร้อย', confirmButtonColor: '#16a34a' });
+    return;
+  }
+  if (!/^\d{2}-\d{2,3}$/.test(batch)) {
+    Swal.fire({ icon: 'warning', title: 'รูปแบบ Batch ไม่ถูกต้อง', text: 'กรุณากรอก Batch ในรูปแบบ xx-xx หรือ xx-xxx เท่านั้น (เช่น 12-34 หรือ 12-345)', confirmButtonColor: '#16a34a' });
+    return;
+  }
+  if (appData.length === 0) {
     planHeader = generatePlanHeader();
     localStorage.setItem(PLAN_INFO_KEY, planHeader);
     localStorage.setItem(RECORD_DATE_KEY, new Date().toDateString());
   }
-
-  const day = lotDate.split("-")[2]; 
-  const number = qty !== "" ? Number(qty).toLocaleString("en-US") : ""; 
+  const day = lotDate.split("-")[2];
+  const number = qty !== "" ? Number(qty).toLocaleString("en-US") : "";
   const lotLine = `${day}/${batch}=${number}`;
-
-  let existingGroup = appData.find(g => g.product === productVal);
-  if(existingGroup){
-    existingGroup.items.push(lotLine);
-  } else {
-    appData.push({
-      product: productVal,
-      items: [lotLine]
-    });
-  }
-
+  const existingGroup = appData.find(g => g.product === productVal);
+  if (existingGroup) existingGroup.items.push(lotLine);
+  else appData.push({ product: productVal, items: [lotLine] });
   saveAndRefresh();
-
-  Swal.fire({
-    icon: 'success',
-    title: 'บันทึกสำเร็จ!',
-    timer: 1300,
-    showConfirmButton: false
-  });
-
-  clearForm(); 
-} 
+  Swal.fire({ icon: 'success', title: 'บันทึกสำเร็จ!', timer: 1300, showConfirmButton: false });
+  clearForm();
+}
 
 function deleteSingleItem(groupIdx, itemIdx) {
   const targetItem = appData[groupIdx].items[itemIdx];
   const productName = appData[groupIdx].product;
-
   Swal.fire({
     title: 'ยืนยันการลบ?',
     text: `ต้องการลบรายการ "${productName} : ${targetItem}" ใช่หรือไม่?`,
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#e63946',
-    cancelButtonColor: '#6c757d',
-    confirmButtonText: 'ใช่, ลบรายการนี้!',
-    cancelButtonText: 'ยกเลิก'
-  }).then((resultAction) => {
+    icon: 'warning', showCancelButton: true,
+    confirmButtonColor: '#dc3545', cancelButtonColor: '#6c757d',
+    confirmButtonText: 'ใช่, ลบรายการนี้!', cancelButtonText: 'ยกเลิก'
+  }).then(resultAction => {
     if (resultAction.isConfirmed) {
       appData[groupIdx].items.splice(itemIdx, 1);
-      if(appData[groupIdx].items.length === 0){
-        appData.splice(groupIdx, 1);
-      }
-      
-      if(appData.length === 0){
+      if (appData[groupIdx].items.length === 0) appData.splice(groupIdx, 1);
+      if (appData.length === 0) {
         planHeader = "";
         localStorage.removeItem(PLAN_INFO_KEY);
         localStorage.removeItem(RECORD_DATE_KEY);
       }
-
       saveAndRefresh();
       Swal.fire({ icon: 'success', title: 'ลบเรียบร้อย!', timer: 1000, showConfirmButton: false });
     }
@@ -688,34 +413,20 @@ function deleteSingleItem(groupIdx, itemIdx) {
 }
 
 function getDayNumber(itemStr) {
-  const dayStr = itemStr.split("/")[0];
-  return parseInt(dayStr, 10) || 0;
+  return parseInt(itemStr.split("/")[0], 10) || 0;
 }
 
 function sortData() {
-  if(appData.length === 0) return;
-
-  appData.forEach(group => {
-    group.items.sort((a, b) => getDayNumber(a) - getDayNumber(b));
-  });
-
-  appData.sort((a, b) => {
-    const minDayA = Math.min(...a.items.map(getDayNumber));
-    const minDayB = Math.min(...b.items.map(getDayNumber));
-    return minDayA - minDayB;
-  });
-
+  if (appData.length === 0) return;
+  appData.forEach(group => group.items.sort((a, b) => getDayNumber(a) - getDayNumber(b)));
+  appData.sort((a, b) => Math.min(...a.items.map(getDayNumber)) - Math.min(...b.items.map(getDayNumber)));
   saveAndRefresh();
   Swal.fire({ icon: 'success', title: 'จัดเรียงตามวันที่เรียบร้อย!', timer: 1200, showConfirmButton: false });
 }
 
 function getFormattedPlainText() {
   if (appData.length === 0) return "";
-  
-  const productsText = appData.map(group => {
-    return `${group.product}\n` + group.items.join("\n");
-  }).join("\n\n");
-
+  const productsText = appData.map(group => `${group.product}\n${group.items.join("\n")}`).join("\n\n");
   return `${planHeader}\n\n${productsText}`;
 }
 
@@ -724,29 +435,24 @@ function saveAndRefresh() {
   renderData();
 }
 
-function clearForm(){ 
+function clearForm() {
   document.getElementById("selectedProductText").innerText = "📦 เลือกสินค้า...";
   document.getElementById("productVal").value = "";
   document.getElementById("lotDate").value = "";
-  if(document.getElementById("lotDate")._flatpickr) {
-    document.getElementById("lotDate")._flatpickr.clear();
-  }
+  if (document.getElementById("lotDate")._flatpickr) document.getElementById("lotDate")._flatpickr.clear();
   document.getElementById("batch").value = "";
-  document.getElementById("qty").value = ""; 
+  document.getElementById("qty").value = "";
 }
 
-function copyText(){ 
+function copyText() {
   const text = getFormattedPlainText();
-  if(text === ""){
-    Swal.fire({ icon: 'info', title: 'ไม่พบข้อมูล', text: 'ไม่มีข้อมูลสำหรับคัดลอก', confirmButtonColor: '#4364F7' });
+  if (text === "") {
+    Swal.fire({ icon: 'info', title: 'ไม่พบข้อมูล', text: 'ไม่มีข้อมูลสำหรับคัดลอก', confirmButtonColor: '#16a34a' });
     return;
-  } 
-
-  navigator.clipboard.writeText(text)
-  .then(()=>{
+  }
+  navigator.clipboard.writeText(text).then(() => {
     Swal.fire({ icon: 'success', title: 'คัดลอกเรียบร้อย!', timer: 1300, showConfirmButton: false });
-  })
-  .catch(()=>{
+  }).catch(() => {
     const dummy = document.createElement("textarea");
     document.body.appendChild(dummy);
     dummy.value = text;
@@ -754,24 +460,17 @@ function copyText(){
     document.execCommand("copy");
     document.body.removeChild(dummy);
     Swal.fire({ icon: 'success', title: 'คัดลอกเรียบร้อย!', timer: 1300, showConfirmButton: false });
-  }); 
-} 
+  });
+}
 
-function clearTextArea(){ 
-  if(appData.length === 0){
-    return;
-  }
-
+function clearTextArea() {
+  if (appData.length === 0) return;
   Swal.fire({
-    title: 'ยืนยันการลบทั้งหมด?',
-    text: "ต้องการลบข้อมูลทั้งหมดใช่หรือไม่?",
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#e63946',
-    cancelButtonColor: '#6c757d',
-    confirmButtonText: 'ใช่, ลบทั้งหมด!',
-    cancelButtonText: 'ยกเลิก'
-  }).then((resultAction) => {
+    title: 'ยืนยันการลบทั้งหมด?', text: 'ต้องการลบข้อมูลทั้งหมดใช่หรือไม่?',
+    icon: 'warning', showCancelButton: true,
+    confirmButtonColor: '#dc3545', cancelButtonColor: '#6c757d',
+    confirmButtonText: 'ใช่, ลบทั้งหมด!', cancelButtonText: 'ยกเลิก'
+  }).then(resultAction => {
     if (resultAction.isConfirmed) {
       appData = [];
       planHeader = "";
@@ -781,8 +480,7 @@ function clearTextArea(){
       Swal.fire({ icon: 'success', title: 'ลบเรียบร้อย!', timer: 1200, showConfirmButton: false });
     }
   });
-} 
-</script> 
-
+}
+</script>
 </body>
 </html>
